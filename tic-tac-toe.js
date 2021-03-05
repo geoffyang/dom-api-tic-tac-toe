@@ -39,10 +39,7 @@ function setImage(square) {
 
   square.append(imgDiv);
   counter++;
-  const header = document.getElementById("game-status");
-  console.log(checkWinner())
-  if (checkWinner() === "x") header.innerHTML = "X is the winner";
-  if (checkWinner() === "o") header.innerHTML = "O is the winner";
+  checkWinner();
 }
 
 function checkWinner() {
@@ -67,38 +64,48 @@ function checkWinner() {
     document.getElementById("square-4"),
     document.getElementById("square-2"),
   ];
+  const header = document.getElementById("game-status");
 
   const threes = [row1, row2, row3, col1, col2, col3, dia1, dia2];
   threes.forEach((three) => {
-    if (checkThree(three) === "x") return "x";
-    if (checkThree(three) === "o") return "o";
+    let winner = checkThree(three);
+    if (winner === "x") {
+      header.innerHTML = "X is the winner";
+    } else if (winner === "o") {
+      header.innerHTML = "O is the winner";
+    }
   });
-
-  // squares.forEach(square){};
 }
 
 function checkThree(values) {
-  const xOrO = values[0].classList.contains("x");
   let xChecker = [];
   let oChecker = [];
 
   values.forEach((square) => {
     if (square.classList.contains("x")) {
       xChecker.push(true);
-    } else { xChecker.push(false) }
+    } else {
+      xChecker.push(false);
+    }
   });
 
   values.forEach((square) => {
     if (square.classList.contains("o")) {
       oChecker.push(true);
-    } else { oChecker.push(false) }
-
+    } else {
+      oChecker.push(false);
+    }
   });
-  let test = xChecker.every(element => {
-    return element === true;
-  })
-  console.log("every checker: ", test)
-  debugger
-  if (xChecker.every(element => false)) return "x";
-  if (oChecker.every(element => true)) return "o";
+
+  let sumX = xChecker.reduce((accum, ele) => {
+    return accum + ele;
+  }, 0);
+
+  let sumO = oChecker.reduce((accum, ele) => {
+    return accum + ele;
+  }, 0);
+
+  // console.log(`X: ${sumX}, O: ${sumO}`)
+  if (sumX === 3) return "x";
+  if (sumO === 3) return "o";
 }
