@@ -10,14 +10,15 @@
 //  -
 
 let counter = 0;
+function clickListener(event) {
+  setImage(event.target);
+}
 const squares = document.querySelectorAll("#tic-tac-toe-board>div");
 // const squareRow1 = document.querySelectorAll('.square.row-1')
 squares.forEach((square) => {
   square.addEventListener(
     "click",
-    (event) => {
-      setImage(event.target);
-    },
+    clickListener,
     { once: true }
   );
 });
@@ -71,10 +72,30 @@ function checkWinner() {
     let winner = checkThree(three);
     if (winner === "x") {
       header.innerHTML = "X is the winner";
+      freezeBoard();
     } else if (winner === "o") {
       header.innerHTML = "O is the winner";
+      freezeBoard();
     }
+
   });
+  if (checkTie() === true) {
+    header.innerHTML = "It's a tie!";
+  }
+}
+
+function checkTie() {
+  let boardFull = 0;
+  squares.forEach(square => {
+    if (square.hasChildNodes()) boardFull++;
+  })
+  return boardFull === 9;
+}
+
+function freezeBoard() {
+  squares.forEach((square) => {
+    square.removeEventListener('click', clickListener);
+  })
 }
 
 function checkThree(values) {
