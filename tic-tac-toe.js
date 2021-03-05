@@ -13,15 +13,15 @@ let counter = 0;
 function clickListener(event) {
   setImage(event.target);
 }
+
 const squares = document.querySelectorAll("#tic-tac-toe-board>div");
-// const squareRow1 = document.querySelectorAll('.square.row-1')
-squares.forEach((square) => {
-  square.addEventListener(
-    "click",
-    clickListener,
-    { once: true }
-  );
-});
+
+newBoard();
+function newBoard() {
+  squares.forEach((square) => {
+    square.addEventListener("click", clickListener, { once: true });
+  });
+}
 
 function setImage(square) {
   const imgDiv = document.createElement("div");
@@ -77,25 +77,49 @@ function checkWinner() {
       header.innerHTML = "O is the winner";
       freezeBoard();
     }
-
   });
   if (checkTie() === true) {
+    freezeBoard();
     header.innerHTML = "It's a tie!";
   }
 }
 
 function checkTie() {
   let boardFull = 0;
-  squares.forEach(square => {
+  squares.forEach((square) => {
     if (square.hasChildNodes()) boardFull++;
-  })
+  });
   return boardFull === 9;
 }
 
+const buttons = document.querySelectorAll(".actions button");
+
 function freezeBoard() {
+  const header = document.getElementById("game-status");
+
   squares.forEach((square) => {
-    square.removeEventListener('click', clickListener);
-  })
+    square.removeEventListener("click", clickListener);
+  });
+  const newGame = buttons[0];
+  newGame.addEventListener("click", (event) => {
+    header.innerHTML = "";
+    clearBoard();
+  });
+  function disableButton(event) {
+    
+  }
+
+}
+
+function clearBoard() {
+  squares.forEach((square) => {
+    if (square.firstChild) {
+      const child = square.firstChild;
+      square.removeChild(child);
+    }
+  });
+  counter = 0;
+  newBoard();
 }
 
 function checkThree(values) {
