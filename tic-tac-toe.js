@@ -39,9 +39,8 @@ function setImage(square) {
 
   square.append(imgDiv);
   counter++;
-
   const header = document.getElementById("game-status");
-
+  console.log(checkWinner())
   if (checkWinner() === "x") header.innerHTML = "X is the winner";
   if (checkWinner() === "o") header.innerHTML = "O is the winner";
 }
@@ -82,18 +81,24 @@ function checkThree(values) {
   const xOrO = values[0].classList.contains("x");
   let xChecker = [];
   let oChecker = [];
+
   values.forEach((square) => {
     if (square.classList.contains("x")) {
       xChecker.push(true);
-    }
+    } else { xChecker.push(false) }
   });
 
   values.forEach((square) => {
     if (square.classList.contains("o")) {
       oChecker.push(true);
-    }
-  });
+    } else { oChecker.push(false) }
 
-  if (xChecker.every(true)) return "x";
-  if (oChecker.every(true)) return "o";
+  });
+  let test = xChecker.every(element => {
+    return element === true;
+  })
+  console.log("every checker: ", test)
+  debugger
+  if (xChecker.every(element => false)) return "x";
+  if (oChecker.every(element => true)) return "o";
 }
